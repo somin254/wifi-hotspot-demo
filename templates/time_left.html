@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WiFi Time Left</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Hourglass styles */
+        .hourglass {
+            position: relative;
+            width: 80px;
+            height: 120px;
+            margin: 20px auto;
+            border: 4px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .sand-top, .sand-bottom {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: #f39c12; /* Sand color */
+        }
+        .sand-top {
+            top: 0;
+            height: 50%;
+        }
+        .sand-bottom {
+            bottom: 0;
+            height: 0;
+        }
+        #time-display {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Time Remaining</h1>
+        <div id="time-display">--:--</div>
+
+        <div class="hourglass">
+            <div class="sand-top"></div>
+            <div class="sand-bottom"></div>
+        </div>
+    </div>
+
+    <script>
+        // Get total seconds from Flask backend
+        let totalSeconds = {{ total_seconds|default(3600) }};
+        let remainingSeconds = totalSeconds;
+
+        const topSand = document.querySelector('.sand-top');
+        const bottomSand = document.querySelector('.sand-bottom');
+        const timeDisplay = document.getElementById('time-display');
+
+        function updateHourglass() {
+            let minutes = Math.floor(remainingSeconds / 60);
+            let seconds = remainingSeconds % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+
+            let percent = remainingSeconds / totalSeconds;
+            topSand.style.height = `${percent * 50}%`;
+            bottomSand.style.height = `${(1 - percent) * 50}%`;
+
+            if (remainingSeconds > 0) {
+                remainingSeconds--;
+            } else {
+                clearInterval(timerInterval);
+            }
+        }
+
+        const timerInterval = setInterval(updateHourglass, 1000);
+        updateHourglass();
+    </script>
+</body>
+</html>
+

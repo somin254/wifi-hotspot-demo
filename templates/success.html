@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Granted</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/access.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="status-box">
+            <h1>✅ Payment Successful</h1>
+            <p class="package-info">
+                Package: <strong>{{ package.label }}</strong> | Amount: <strong>KES {{ package.price }}</strong>
+            </p>
+            <p class="transaction-id">
+                Transaction ID: <strong>{{ txid }}</strong>
+            </p>
+
+            <div class="buttons">
+                <a href="/time-left"><button class="btn">Check Access Status</button></a>
+                <a href="/"><button class="btn secondary">Buy Another Package</button></a>
+            </div>
+
+            
+        </div>
+    </div>
+</body>
+</html>
+

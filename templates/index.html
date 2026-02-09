@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hostel Wi-Fi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='wifi_logo.png') }}">
+</head>
+<body>
+<div class="container">
+    <div style="text-align:center;">
+        <img src="{{ url_for('static', filename='wifi_logo.png') }}" alt="Hostel Wi-Fi" style="width:100px;">
+        <h1>Hostel Wi-Fi Access</h1>
+    </div>
+
+    <form method="POST" action="/pay">
+        <label>Phone Number:</label>
+        <input type="text" name="phone" placeholder="07XXXXXXXX" required>
+
+        <label>Choose Package:</label>
+        {% for key, pkg in packages.items() %}
+        <div class="package-option">
+            <div>
+                <input type="radio" name="package" value="{{ key }}" required>
+                {{ pkg.label }}
+            </div>
+            <div>
+                KES {{ pkg.price }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <button type="submit">Pay with M-Pesa</button>
+    </form>
+
+    <p style="text-align:center; font-size:0.9em; color:#555; margin-top:20px;">
+        Need help? Contact: +254 748623437
+    </p>
+</div>
+</body>
+</html>
+
